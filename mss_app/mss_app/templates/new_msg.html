@@ -1,0 +1,33 @@
+<!-- templates/home.html-->
+{% extends 'base_msg.html' %}
+
+{% block username %}
+Hello {{user.username}}
+{% endblock %}
+{% block content %}
+{% load widget_tweaks %}
+{% if user.is_authenticated %}
+
+<form method="post">
+       {% csrf_token %}
+       {% for field in form %}
+      <div class="form-group">
+        <label >{{ field.label }}</label>
+        {{ field|add_class:'form-control' }}
+        {% for error in field.errors %}
+          <span class="help-block">{{ error }}</span>
+        {% endfor %}
+      </div>
+    {% endfor %}
+    <button type="submit">submit</button>
+</form>
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a>
+{% endif %}
+{% endblock %}
+{% block scripts %}
+$(document).ready(function() {
+    $('#messages_received').DataTable();
+} );
+{% endblock %}
